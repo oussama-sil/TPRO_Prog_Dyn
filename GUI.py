@@ -1,4 +1,4 @@
-import code
+# import code
 from tkinter import *
 from tkinter import ttk
 from turtle import left, right, title
@@ -27,9 +27,14 @@ color_schema = {
     'title_color':'#788CDE', #ori :#788CDE
     'btn_color' : "#3B52AD",   #ori : #788CDE
     'btn_color_active' : "#5466AA", #ori #5466AA
-    'input_border_color':'#5466AA', #ori #788CDE
-    'input_border_color_active':'#9BA8DB',
-    'input_bg_color':'#2A2A2A'  #ori:#9BA8DB
+    'input_border_color':'#1C1C1C', #ori #788CDE
+    'input_border_color_active':'#3B52AD',
+    'input_bg_color':'#323232',  #ori:#9BA8DB #323232 #2A2A2A
+    'input_relief':'sunken',
+    'input_border_width':2,
+    'input_insert_color' :'#788CDE' ,
+    'btn_relief' : 'raised',
+    'btn_borderwidth':1,
 }
 # btn_color = "#3B52AD"   #ori : #788CDE
 # btn_color_active = "#5466AA"  #ori:#9BA8DB
@@ -70,8 +75,8 @@ class App(Tk):
         start_btn= Button(self,text="Démmarrer",command=self.start_action)
         quit_btn= Button(self,text="Quitter",command=self.quit_action)
     
-        start_btn.configure(width=10,pady=3,padx=3,bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 11))
-        quit_btn.configure(width=10,pady=3,padx=3,bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 11))
+        start_btn.configure(relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,width=10,pady=3,padx=3,bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",font = ("Arial", 11))
+        quit_btn.configure(relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,width=10,pady=3,padx=3,bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",font = ("Arial", 11))
         
         # button
         start_btn.grid(row = 3,columnspan=2,column=2,padx=2)   
@@ -147,12 +152,12 @@ class Main(Toplevel):  #The main windows
         randomize_list_btn = Button(top_frame_btns_frame,text="Générer liste d'objets aléatoire",command=self.randomize_list_objects)
 
         #Configuring  buttons style
-        add_object_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 11))
-        edit_object_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 11))
-        delete_selection_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 11))
-        delete_all_objects_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 11))
-        update_capacity_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 11))
-        randomize_list_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 11))
+        add_object_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 11))
+        edit_object_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 11))
+        delete_selection_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 11))
+        delete_all_objects_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 11))
+        update_capacity_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 11))
+        randomize_list_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 11))
 
 
         add_object_btn.grid(column=0,row=0,padx=3)
@@ -184,7 +189,8 @@ class Main(Toplevel):  #The main windows
         )
 
         style.map('Treeview',
-        background=[('selected',color_schema['btn_color_active'])]        )
+        background=[('selected',color_schema['btn_color'])],foreground=[('selected','white')],
+               )
 
         style.map('Treeview.Heading',
             background=[('selected','#788CDE')]        )
@@ -273,25 +279,25 @@ class Main(Toplevel):  #The main windows
         capacity_frame.pack(pady=8,padx=10)
         #Empty frame
         empty_frame2 = Frame(right_frame,width=400,bg=color_schema['window_bg'])
-        empty_frame2.pack(pady=25)
+        empty_frame2.pack(pady=10)
 
 
         #Main buttons
 
         resolve_problem_btn=Button(right_frame,text="Résoudre le problème",command=self.resolve_problem_action,width=100,height=2)
-        resolve_problem_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        resolve_problem_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         resolve_problem_btn.pack(padx=20,pady=5)
 
         compute_P_btn=Button(right_frame,text="Calculer P(i,j)",command=self.compute_P_action,width=100,height=2)
-        compute_P_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        compute_P_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         compute_P_btn.pack(padx=20,pady=5)
         
         test_algorithm_btn=Button(right_frame,text="Tester l'algorithme",command=self.test_algorithm_action,width=100,height=2)
-        test_algorithm_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        test_algorithm_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         test_algorithm_btn.pack(padx=20,pady=5)
         
         print_algorithm_btn=Button(right_frame,text="Afficher l'algorithme",command=self.print_algorithm_action,width=100,height=2)
-        print_algorithm_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        print_algorithm_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         print_algorithm_btn.pack(padx=20,pady=5)
         
         # print_table_P_btn=Button(right_frame,text="Afficher tables des P(i,j)",command=self.print_table_P_action,width=100,height=2)
@@ -306,7 +312,6 @@ class Main(Toplevel):  #The main windows
         global poids_max 
         global gain_max 
         global capacite_sac
-        # print(Objects)
         gain_max = 0
         poids_max = 0
 
@@ -338,8 +343,7 @@ class Main(Toplevel):  #The main windows
         self.App_window.eval(f'tk::PlaceWindow {str(add_object_window)} center')
 
     def edit_object_action(self):
-        # print(int(self.tree.focus()))
-        # print()
+
         if(self.tree.focus() != ""):
             update_object_window = UpdateObjectWindow(self,int(self.tree.focus()))
             self.App_window.eval(f'tk::PlaceWindow {str(update_object_window)} center')
@@ -431,7 +435,7 @@ class AddObjectWindow(Toplevel):
 
 
         self.weight_input = Entry(weight_frame)
-        self.weight_input.configure(width=10,relief="flat",bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",borderwidth=1,highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
+        self.weight_input.configure(insertbackground=color_schema['input_insert_color']  ,relief=color_schema["input_relief"],borderwidth=color_schema["input_border_width"] ,width=10,bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
 
         weight_lb.grid(row=0,column=0)
         self.weight_input.grid(row=0,column=1)
@@ -441,11 +445,11 @@ class AddObjectWindow(Toplevel):
         gain_frame= Frame(self,width=400,bg=color_schema['window_bg'])
         gain_frame.pack( padx=10,  pady=7,fill='both')
 
-        gain_lb = Label( gain_frame,text="Gain du sac")
+        gain_lb = Label( gain_frame,text="Gain de l'objet")
         gain_lb.configure(width=15,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6",pady=2,padx=2)
 
         self.gain_input = Entry(gain_frame)
-        self.gain_input.configure(width=10,relief="flat",bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",borderwidth=1,highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
+        self.gain_input.configure(insertbackground=color_schema['input_insert_color']  ,relief=color_schema["input_relief"],borderwidth=color_schema["input_border_width"] ,width=10,bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
 
         gain_lb.grid(row=0,column=0)
         self.gain_input.grid(row=0,column=1)
@@ -463,12 +467,12 @@ class AddObjectWindow(Toplevel):
 
 
         cancel_btn=Button(btn_frame,text="Annuler",command=self.cancel_action,width=10)
-        cancel_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        cancel_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         # add_btn.pack(padx=20,pady=5)
         cancel_btn.grid(row=0,column=0,padx=17,sticky=E)
 
         add_btn=Button(btn_frame,text="Ajouter",command=self.add_action,width=10)
-        add_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        add_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         # add_btn.pack(padx=20,pady=5)
         add_btn.grid(row=0,column=1,padx=15,sticky=E)
 
@@ -489,7 +493,7 @@ class AddObjectWindow(Toplevel):
                 if(weight > poids_max):
                     poids_max = weight
                 Objects.append([gain,weight])
-                print(Objects)
+                # print(Objects)
                 self.App_window.update_object_table()
                 self.grab_release()
                 self.destroy()
@@ -542,7 +546,7 @@ class UpdateObjectWindow(Toplevel):
 
         self.weight_input = Entry(weight_frame)
         self.weight_input.insert(0,Objects[self.object_indx][1])
-        self.weight_input.configure(width=10,relief="flat",bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",borderwidth=1,highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
+        self.weight_input.configure(insertbackground=color_schema['input_insert_color']  ,width=10,relief=color_schema["input_relief"],borderwidth=color_schema["input_border_width"] ,bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
 
         weight_lb.grid(row=0,column=0)
         self.weight_input.grid(row=0,column=1)
@@ -552,13 +556,13 @@ class UpdateObjectWindow(Toplevel):
         gain_frame= Frame(self,width=400,bg=color_schema['window_bg'])
         gain_frame.pack( padx=10,  pady=7,fill='both')
 
-        gain_lb = Label( gain_frame,text="Gain du sac")
+        gain_lb = Label( gain_frame,text="Gain de l'objet")
         gain_lb.configure(width=15,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6",pady=2,padx=2)
 
 
         self.gain_input = Entry(gain_frame)
         self.gain_input.insert(0,Objects[self.object_indx][0])
-        self.gain_input.configure(width=10,relief="flat",bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",borderwidth=1,highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
+        self.gain_input.configure(insertbackground=color_schema['input_insert_color']  ,width=10,relief=color_schema["input_relief"],borderwidth=color_schema["input_border_width"] ,bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
 
         gain_lb.grid(row=0,column=0)
         self.gain_input.grid(row=0,column=1)
@@ -576,12 +580,12 @@ class UpdateObjectWindow(Toplevel):
 
 
         cancel_btn=Button(btn_frame,text="Annuler",command=self.cancel_action,width=10)
-        cancel_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        cancel_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         # add_btn.pack(padx=20,pady=5)
         cancel_btn.grid(row=0,column=0,padx=17,sticky=E)
 
         update_btn=Button(btn_frame,text="Modifier",command=self.update_action,width=10)
-        update_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        update_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         # add_btn.pack(padx=20,pady=5)
         update_btn.grid(row=0,column=1,padx=15,sticky=E)
 
@@ -607,7 +611,7 @@ class UpdateObjectWindow(Toplevel):
                 #     gain_max = gain
                 Objects[self.object_indx][0]= gain
                 Objects[self.object_indx][1]= weight
-                print(Objects)
+                # print(Objects)
                 self.App_window.update_object_table()
                 self.grab_release()
                 self.destroy()
@@ -661,7 +665,7 @@ class UpdateCapacityWindow(Toplevel):
         self.capacity_input = Entry(capacity_frame)
         #TODO add current capacity
         self.capacity_input.insert(0,capacite_sac)
-        self.capacity_input.configure(width=10,relief="flat",bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",borderwidth=1,highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
+        self.capacity_input.configure(insertbackground=color_schema['input_insert_color']  ,width=10,relief=color_schema["input_relief"],borderwidth=color_schema["input_border_width"] ,bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6" ,highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
 
         capacity_lb.grid(row=0,column=0)
         self.capacity_input.grid(row=0,column=1)
@@ -680,12 +684,12 @@ class UpdateCapacityWindow(Toplevel):
 
 
         cancel_btn=Button(btn_frame,text="Annuler",command=self.cancel_action,width=10)
-        cancel_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        cancel_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         # add_btn.pack(padx=20,pady=5)
         cancel_btn.grid(row=0,column=0,padx=17,sticky=E)
 
         update_btn=Button(btn_frame,text="Modifier",command=self.update_action,width=10)
-        update_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        update_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         # add_btn.pack(padx=20,pady=5)
         update_btn.grid(row=0,column=1,padx=17,sticky=E)
 
@@ -700,7 +704,7 @@ class UpdateCapacityWindow(Toplevel):
             capacity = int(self.capacity_input.get())
             global capacite_sac
             capacite_sac = capacity
-            print("New capacity : {}".format(capacite_sac))
+            # print("New capacity : {}".format(capacite_sac))
             self.App_window.update_object_table()
             self.grab_release()
             self.destroy()
@@ -744,14 +748,14 @@ class RandomizeObjectsWindow(Toplevel):
 
         #Input for the number of objects
         nb_objects_frame= Frame(self,width=400,bg=color_schema['window_bg']) ##1C1C1C
-        nb_objects_frame.pack( padx=20,  pady=15,fill='both')
+        nb_objects_frame.pack( padx=17,  pady=10,fill='both')
 
         nb_objects_lb = Label( nb_objects_frame,text="Nombre d'objets ")
         nb_objects_lb.configure(width=15,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6",pady=2,padx=2)
 
 
         self.nb_objects_input = Entry(nb_objects_frame)
-        self.nb_objects_input.configure(width=10,relief="flat",bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",borderwidth=1,highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
+        self.nb_objects_input.configure(insertbackground=color_schema['input_insert_color']  ,width=10,relief=color_schema["input_relief"],borderwidth=color_schema["input_border_width"] ,bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
 
         nb_objects_lb.grid(row=0,column=0)
         self.nb_objects_input.grid(row=0,column=1)
@@ -759,28 +763,28 @@ class RandomizeObjectsWindow(Toplevel):
 
         #Input for the min weight
         min_weight_frame= Frame(self,width=400,bg=color_schema['window_bg']) ##1C1C1C
-        min_weight_frame.pack( padx=20,  pady=15,fill='both')
+        min_weight_frame.pack( padx=17,  pady=10,fill='both')
 
         min_weight_lb = Label( min_weight_frame,text="Poids minimale ")
         min_weight_lb.configure(width=15,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6",pady=2,padx=2)
 
 
         self.min_weight_input = Entry(min_weight_frame)
-        self.min_weight_input.configure(width=10,relief="flat",bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",borderwidth=1,highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
+        self.min_weight_input.configure(insertbackground=color_schema['input_insert_color']  ,width=10,relief=color_schema["input_relief"],borderwidth=color_schema["input_border_width"] ,bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
 
         min_weight_lb.grid(row=0,column=0)
         self.min_weight_input.grid(row=0,column=1)
         
         #Input for the min weight
         max_weight_frame= Frame(self,width=400,bg=color_schema['window_bg']) ##1C1C1C
-        max_weight_frame.pack( padx=20,  pady=15,fill='both')
+        max_weight_frame.pack( padx=17,  pady=10,fill='both')
 
         max_weight_lb = Label( max_weight_frame,text="Poids maximale")
         max_weight_lb.configure(width=15,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6",pady=2,padx=2)
 
 
         self.max_weight_input = Entry(max_weight_frame)
-        self.max_weight_input.configure(width=10,relief="flat",bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",borderwidth=1,highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
+        self.max_weight_input.configure(insertbackground=color_schema['input_insert_color']  ,width=10,relief=color_schema["input_relief"],borderwidth=color_schema["input_border_width"] ,bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
 
         max_weight_lb.grid(row=0,column=0)
         self.max_weight_input.grid(row=0,column=1)
@@ -788,48 +792,48 @@ class RandomizeObjectsWindow(Toplevel):
         #Input for the gain  
         # Min Gain   
         min_gain_frame= Frame(self,width=400,bg=color_schema['window_bg'])
-        min_gain_frame.pack( padx=20,  pady=15,fill='both')
+        min_gain_frame.pack( padx=17,  pady=10,fill='both')
 
         min_gain_lb = Label( min_gain_frame,text="Gain minimale")
         min_gain_lb.configure(width=15,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6",pady=2,padx=2)
 
         self.min_gain_input = Entry(min_gain_frame)
-        self.min_gain_input.configure(width=10,relief="flat",bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",borderwidth=1,highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
+        self.min_gain_input.configure(insertbackground=color_schema['input_insert_color']  ,width=10,relief=color_schema["input_relief"],borderwidth=color_schema["input_border_width"] ,bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
 
         min_gain_lb.grid(row=0,column=0)
         self.min_gain_input.grid(row=0,column=1)
         # Max Gain   
         max_gain_frame= Frame(self,width=400,bg=color_schema['window_bg'])
-        max_gain_frame.pack( padx=20,  pady=15,fill='both')
+        max_gain_frame.pack( padx=17,  pady=10,fill='both')
 
         max_gain_lb = Label( max_gain_frame,text="Gain maximale")
         max_gain_lb.configure(width=15,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6",pady=2,padx=2)
 
         self.max_gain_input = Entry(max_gain_frame)
-        self.max_gain_input.configure(width=10,relief="flat",bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",borderwidth=1,highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
+        self.max_gain_input.configure(insertbackground=color_schema['input_insert_color']  ,width=10,relief=color_schema["input_relief"],borderwidth=color_schema["input_border_width"] ,bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
 
         max_gain_lb.grid(row=0,column=0)
         self.max_gain_input.grid(row=0,column=1)
 
         #Input valiadtion label
         self.validation_lb = Label(self,bg=color_schema['window_bg'],height=0,text="",fg="#D6D6D6",font = ("Arial", 1))
-        self.validation_lb.pack( padx=10,fill='both')
+        self.validation_lb.pack( padx=8,fill='both')
 
 
 
 
         #adding the buttons
         btn_frame= Frame(self,width=400,bg=color_schema['window_bg'])
-        btn_frame.pack( padx=20, pady=15,fill='both')
+        btn_frame.pack( padx=17, pady=15,fill='both')
 
 
         cancel_btn=Button(btn_frame,text="Annuler",command=self.cancel_action,width=10)
-        cancel_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        cancel_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         # add_btn.pack(padx=20,pady=5)
         cancel_btn.grid(row=0,column=0,padx=17,sticky=E)
 
         add_btn=Button(btn_frame,text="Valider",command=self.add_action,width=10)
-        add_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        add_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         # add_btn.pack(padx=20,pady=5)
         add_btn.grid(row=0,column=1,padx=17,sticky=E)
 
@@ -851,7 +855,7 @@ class RandomizeObjectsWindow(Toplevel):
             max_gain = int(self.max_gain_input.get())
             nb_objects = int(self.nb_objects_input.get())
             Objects = alea_val(nb_objects,min_gain,max_gain,min_weight,max_weight)
-            print(Objects)
+            # print(Objects)
             self.App_window.update_object_table()
             self.grab_release()
             self.destroy()
@@ -901,7 +905,7 @@ class ComputePWindow(Toplevel):
 
 
         self.i_input = Entry(i_frame)
-        self.i_input.configure(width=10,relief="flat",bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",borderwidth=1,highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
+        self.i_input.configure(insertbackground=color_schema['input_insert_color']  ,width=10,relief=color_schema["input_relief"],borderwidth=color_schema["input_border_width"] ,bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
 
         i_lb.grid(row=0,column=0)
         self.i_input.grid(row=0,column=1)
@@ -915,40 +919,40 @@ class ComputePWindow(Toplevel):
 
 
         self.j_input = Entry(j_frame)
-        self.j_input.configure(width=10,relief="flat",bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",borderwidth=1,highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
+        self.j_input.configure(insertbackground=color_schema['input_insert_color']  ,width=10,relief=color_schema["input_relief"],borderwidth=color_schema["input_border_width"] ,bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
 
         j_lb.grid(row=0,column=0)
         self.j_input.grid(row=0,column=1)
 
         #Input valiadtion label
         self.validation_lb = Label(self,bg=color_schema['window_bg'],height=0,text="",fg="#D6D6D6",font = ("Arial", 1))
-        self.validation_lb.pack( padx=10,fill='both')
+        self.validation_lb.pack( padx=10,fill='both',pady=0)
 
         #Adding labels for the  output 
         #P(i,j) value
         self.P_lb = Label( self,text="")
-        self.P_lb.configure(width=35,bg=color_schema['window_bg'],font = ("Arial", 1),fg="#D6D6D6",pady=2,padx=2)
+        self.P_lb.configure(width=35,bg=color_schema['window_bg'],font = ("Arial", 1),fg="#D6D6D6",pady=0,padx=0)
         self.P_lb.pack()
 
         #calculation time
         self.T_lb = Label( self,text="")
-        self.T_lb.configure(width=35,bg=color_schema['window_bg'],font = ("Arial", 1),fg="#D6D6D6",pady=2,padx=2)
+        self.T_lb.configure(width=35,bg=color_schema['window_bg'],font = ("Arial", 1),fg="#D6D6D6",pady=0,padx=0)
         self.T_lb.pack()
 
         
         
         #adding the buttons
         btn_frame= Frame(self,width=400,bg=color_schema['window_bg'])
-        btn_frame.pack( padx=30, pady=15,fill='both')
+        btn_frame.pack( padx=30, pady=13,fill='both')
 
 
         quit_btn=Button(btn_frame,text="Quitter",command=self.quit_action,width=10)
-        quit_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        quit_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         # add_btn.pack(padx=20,pady=5)
         quit_btn.grid(row=0,column=0,padx=25,sticky=E)
 
         compute_btn=Button(btn_frame,text="Calculer P(i,j)",command=self.compute_action,width=12)
-        compute_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        compute_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         # add_btn.pack(padx=20,pady=5)
         compute_btn.grid(row=0,column=1,padx=25,sticky=E)
 
@@ -966,17 +970,17 @@ class ComputePWindow(Toplevel):
             global capacite_sac
             if i>len(Objects):
                 self.validation_lb.config(text="i doit être inférieur au nombre d'objets crées",height=2,font = ("Arial", 9))
-            elif j>capacite_sac:
-                self.validation_lb.config(text="j doit être inférieur à la capacité du sac",height=2,font = ("Arial", 9))
+            # elif j>capacite_sac:
+            #     self.validation_lb.config(text="j doit être inférieur à la capacité du sac",height=2,font = ("Arial", 9))
             else :
                 start = time.time()*1000
                 P_i_j = P(i,j,Objects)
                 end=time.time()*1000
                 self.validation_lb.config(text="",height=1,font = ("Arial", 1))
-                self.P_lb.config(text='P({},{}) = {}'.format(i,j,P_i_j),height=2,font = ("Arial", 12,'bold'))
-                self.T_lb.config(text='Temps de calcul de P({},{}) = {:.2f}ms'.format(i,j,end-start),height=2,font = ("Arial", 12,'bold'))
+                self.P_lb.config(text='P({},{}) = {}'.format(i,j,P_i_j),height=1,font = ("Arial", 12,'bold'))
+                self.T_lb.config(text='Temps de calcul de P({},{}) = {:.2f}ms'.format(i,j,end-start),height=1,font = ("Arial", 12,'bold'))
         except Exception as e:
-            print(e)
+            # print(e)
             self.validation_lb.config(text='i et j doivent être des entiers',height=2,font = ("Arial", 9))
 
     def close_action(self):
@@ -1095,7 +1099,7 @@ class ResolveProblemWindow(Toplevel):
         )
 
         style.map('Treeview',
-        background=[('selected','#788CDE')]        )
+        background=[('selected',color_schema['btn_color'])],foreground=[('selected','white')],        )
 
         style.map('Treeview.Heading',
             background=[('selected','#788CDE')]        )
@@ -1289,41 +1293,41 @@ class TestAlgorithmWindow(Toplevel):
         self.left_frame=Frame(self,bg=color_schema['window_bg'])
 
 
-        title= Label(self.left_frame,text="Complexity de l'algorithme :")
+        title= Label(self.left_frame,text="Complexité de l'algorithme :")
         title.configure(pady=0,bg=color_schema['window_bg'],font = ("Arial", 14,"bold"),fg=color_schema['title_color'])
-        title.pack(padx=0,pady=4,anchor="w")
+        title.pack(padx=0,pady=3,anchor="w")
 
         text= Label(self.left_frame,text=""" 
-L'algorithme a une complexity en o(nw), ou n est  
-le nombre d'objet et w est la capacité du sac. 
-En posant n=w, la complexity devient o(n^2),cette 
-complexité peut être observé en testant l'algorithme
+La complexité de l'algorithme = o(n.w) ou n est  
+le nombre d'objets et w est la capacité du sac. 
+En posant n=w, la complexité devient égale a o(n^2),
+elle peut être observé en testant l'algorithme
 """)
         text.configure(pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6")
         text.pack(padx=0,pady=1,anchor="w")
 
         title= Label(self.left_frame,text="Test de l'algorithme")
         title.configure(pady=0,bg=color_schema['window_bg'],font = ("Arial", 14,"bold"),fg=color_schema['title_color'])
-        title.pack(padx=0,pady=3,anchor="w")
+        title.pack(padx=0,pady=1,anchor="w")
 
         text= Label(self.left_frame,text=""" 
-Cette fonctionnalité permet de voire l'evolution 
+Cette fonctionnalité permet de voire l'évolution 
 du temps d'execution de l'algorithme en fonction du 
-nombre d'objet n. elle calcul P(i,i) pour des valeurs 
-de i entre  0 et n et affiche le graph T_exec = f(n)
+nombre d'objets n. elle calcul P(i,i) pour des valeurs 
+de i entre 0 et n et affiche le graphe T_exec = f(n)
         """)
         text.configure(pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6")
         text.pack(padx=0,pady=1,anchor="w")
 
         title= Label(self.left_frame,text="Remarque : ")
         title.configure(pady=0,bg=color_schema['window_bg'],font = ("Arial", 12,"bold"),fg=color_schema['title_color'])
-        title.pack(padx=0,pady=3,anchor="w")
+        title.pack(padx=0,pady=1,anchor="w")
 
         text= Label(self.left_frame,text=
-"""La valeur de n choisit ne doit pas etre trés grande 
-(<1500).Pour des valeurs trés grandes , le programme 
-risque de prendre beaucoup de temps pour afficher 
-le graph""")
+"""
+Les valeurs de n choisies ne doit pas être trop grande 
+(<2000).sinon le programme risque de prendre 
+beaucoup de temps pour afficher le graphe """)
         text.configure(pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6")
         text.pack(padx=0,pady=1,anchor="w")
 
@@ -1334,15 +1338,15 @@ le graph""")
 
 
         self.n_input = Entry(input_frame)
-        self.n_input.configure(width=10,relief="flat",bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",borderwidth=1,highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
+        self.n_input.configure(insertbackground=color_schema['input_insert_color']  ,width=10,relief=color_schema["input_relief"],borderwidth=color_schema["input_border_width"] ,bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
 
 
         input_lb.grid(row=0,column=0)
         self.n_input.grid(row=0,column=1)
         
 
-        display_btn=Button(input_frame,text="Afficher Graph",command=self.handle_btn_click,width=15)
-        display_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        display_btn=Button(input_frame,text="Afficher Graphe",command=self.handle_btn_click,width=15)
+        display_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         # add_btn.pack(padx=20,pady=5)
         display_btn.grid(row=0,column=2,padx=10,sticky=E)
         
@@ -1358,7 +1362,7 @@ le graph""")
 
         s = ttk.Style()
         # s.theme_use('clam')
-        s.configure("red.Horizontal.TProgressbar", foreground=color_schema["title_color"], background=color_schema["title_color"],troughcolor=color_schema["window_bg"])
+        s.configure("red.Horizontal.TProgressbar", foreground=color_schema["btn_color"], background=color_schema["btn_color"],troughcolor=color_schema["window_bg"])
         self.progress_bar = ttk.Progressbar(self.left_frame,style="red.Horizontal.TProgressbar",orient=HORIZONTAL,length=300,mode='indeterminate')
         self.progress_bar.pack(pady=5)
 
