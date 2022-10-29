@@ -161,12 +161,41 @@ def test_P_objects(n,w,Objects):
 
 
 
+def test_fct_time(tab_w,sup_n,Objects):
+    step = int(sup_n /100)
+    nb=0
     
+    nb = 0
+    tab_n=[]
+    tab_cpt=[]
+    tmp = 0
+    nb = 0
+    while nb < sup_n:
+        start = time.time()*1000
+        P(nb,nb,Objects)
+        end=time.time()*1000
+        tab_n.append(nb)
+        tab_cpt.append(end-start)
+        nb += step
+        #plt.figure(figsize=(5,3),dpi=100)
+    plt.plot(tab_n,tab_cpt,linewidth=1,label="w={}".format(step))
+    plt.xlabel('valeurs de n')
+    plt.ylabel('Temps execution (ms)')
+    plt.title("Evolution temps d'execution en fonction du nombre d'objets",fontdict={'fontname':'Comic Sans MS','fontsize':18})
+    plt.legend()
+    plt.show()
+    plt.savefig("PD_Rec_temps_exec.png")
+
+
+
+# ()   
 
 # Objects =[[5, 85], [8, 26], [2, 25], [3, 82], [2, 53], [5, 83], [6, 29], [4, 69], [7, 74], [8, 4], [9, 5], [2, 49], [3, 42], [6, 58], [1, 27], [9, 45], [8, 30], [8, 64], [10, 28], [5, 93], [4, 57], [3, 20], [8, 99], [9, 3], [8, 36], [8, 8], [10, 75], [6, 51], [7, 46], [1, 38], [7, 43], [1, 8], [1, 95], [3, 52], [8, 39], [9, 15], [2, 17], [5, 42], [8, 78], [3, 53], [7, 65], [10, 54], [4, 25], [10, 21], [9, 39], [2, 9], [9, 77], [6, 23], [6, 59], [7, 29], [8, 94], [5, 39], [6, 22], [7, 77], [1, 64], [1, 29], [8, 92], [4, 89], [8, 95], [10, 73], [7, 72], [7, 72], [2, 1], [2, 77], [9, 91], [8, 2], [3, 5], [8, 83], [10, 80], [3, 35], [4, 24], [1, 79], [2, 40], [2, 90], [6, 81], [6, 5], [7, 50], [1, 52], [1, 76], [9, 8], [5, 25], [9, 71], [4, 44], [5, 22], [8, 45], [5, 14], [10, 10], [6, 85], [8, 51], [4, 62], [3, 70], [10, 54], [10, 10], [7, 4], [4, 77], [1, 82], [1, 27], [4, 49], [2, 42], [9, 72]]
+# Objects = alea_val(10000,0,100,0,100)
+# print("Objects created")
+# test_fct_time([1000,2000,3000],1000,Objects)
 
-
-# test_P_objects(19,352,Objects)
+# test_P_objects(30,500,Objects)
 
 
 
@@ -181,32 +210,6 @@ def test_P_objects(n,w,Objects):
 # (res,temps_exec) = remplir_tableau(n, w, Gains,Poids)
 
 # print(P(10,10,V,W))
-def test_fct_time(tab_w,sup_n):
-    for wb in tab_w:
-        nb = 0
-        tab_n=[]
-        tab_cpt=[]
-        global Val
-        tmp = 0
-        for nb in range(0,sup_n):
-            start = time.time()*1000
-            val = P(nb,wb)
-            end=time.time()*1000
-            tab_n.append(nb)
-            tab_cpt.append(end-start)
-            print("P({},{}) = {} avec {} appel recursive".format(nb,wb,val,Cpt))
-    
-        #plt.figure(figsize=(5,3),dpi=100)
-        plt.plot(tab_n,tab_cpt,linewidth=1,label="w={}".format(wb))
-
-    
-    #Adding a legend
-    plt.xlabel('valeurs de n')
-    plt.ylabel('Temps execution (ms)')
-    plt.title("PD_Rec_temps_exec",fontdict={'fontname':'Comic Sans MS','fontsize':18})
-    plt.legend()
-    plt.show()
-    plt.savefig("PD_Rec_temps_exec.png",dpi=300)
 
 
 

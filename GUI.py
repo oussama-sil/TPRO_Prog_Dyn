@@ -1,9 +1,19 @@
 import code
 from tkinter import *
 from tkinter import ttk
-from turtle import left
+from turtle import left, right, title
 from TP_Sol import alea_val,P,P_objets
 import time
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
+
+import os
+import time
+from datetime import datetime
+import shutil
+import threading
+
 #from tkinter.ttk import *
 
 
@@ -367,7 +377,8 @@ class Main(Toplevel):  #The main windows
         self.App_window.eval(f'tk::PlaceWindow {str(resolve_problem_window)} center')
 
     def test_algorithm_action(self):
-        pass
+        test_algorithm_window = TestAlgorithmWindow(self)
+        self.App_window.eval(f'tk::PlaceWindow {str(test_algorithm_window)} center')
 
     def print_algorithm_action(self):
         print_algorithm_window = DisplayAlgorithmWindow(self)
@@ -1246,6 +1257,260 @@ class DisplayAlgorithmWindow(Toplevel):
 
 
 
+class TestAlgorithmWindow(Toplevel):
+    def __init__(self,Main_window):
+        super().__init__(Main_window)
+        #? Disabling the old window
+        self.grab_set()
+
+        #? Setting attributes
+
+        self.App_window = Main_window
+        self.width = 200
+        self.height=200
+        
+        #? Global Variables 
+        global Objects
+        global poids_max
+        global capacite_sac
+
+        self.title("Test de l'algorithme")
+        # self.geometry("{}x{}".format(self.width,self.height))
+        #styling
+        self.configure(bg=color_schema['window_bg'])
+        #self.eval('tk::PlaceWindow . center')
+        #center(self)
+        #self.configure(padx=5,pady=10)
+        self.resizable(False,False)
+        self.protocol("WM_DELETE_WINDOW", self.close_action)
+
+
+        #Side left
+        self.left_frame=Frame(self,bg=color_schema['window_bg'])
+
+
+        title= Label(self.left_frame,text="Complexity de l'algorithme :")
+        title.configure(pady=0,bg=color_schema['window_bg'],font = ("Arial", 14,"bold"),fg=color_schema['title_color'])
+        title.pack(padx=0,pady=4,anchor="w")
+
+        text= Label(self.left_frame,text=""" 
+L'algorithme a une complexity en o(nw), ou n est  
+le nombre d'objet et w est la capacité du sac. 
+En posant n=w, la complexity devient o(n^2),cette 
+complexité peut être observé en testant l'algorithme
+""")
+        text.configure(pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6")
+        text.pack(padx=0,pady=1,anchor="w")
+
+        title= Label(self.left_frame,text="Test de l'algorithme")
+        title.configure(pady=0,bg=color_schema['window_bg'],font = ("Arial", 14,"bold"),fg=color_schema['title_color'])
+        title.pack(padx=0,pady=3,anchor="w")
+
+        text= Label(self.left_frame,text=""" 
+Cette fonctionnalité permet de voire l'evolution 
+du temps d'execution de l'algorithme en fonction du 
+nombre d'objet n. elle calcul P(i,i) pour des valeurs 
+de i entre  0 et n et affiche le graph T_exec = f(n)
+        """)
+        text.configure(pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6")
+        text.pack(padx=0,pady=1,anchor="w")
+
+        title= Label(self.left_frame,text="Remarque : ")
+        title.configure(pady=0,bg=color_schema['window_bg'],font = ("Arial", 12,"bold"),fg=color_schema['title_color'])
+        title.pack(padx=0,pady=3,anchor="w")
+
+        text= Label(self.left_frame,text=
+"""La valeur de n choisit ne doit pas etre trés grande 
+(<1500).Pour des valeurs trés grandes , le programme 
+risque de prendre beaucoup de temps pour afficher 
+le graph""")
+        text.configure(pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6")
+        text.pack(padx=0,pady=1,anchor="w")
+
+        input_frame= Frame(self.left_frame,bg=color_schema['window_bg'],pady=20) ##1C1C1C
+
+        input_lb = Label( input_frame,text="Valeur de n")
+        input_lb.configure(width=12,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6",pady=2,padx=0)
+
+
+        self.n_input = Entry(input_frame)
+        self.n_input.configure(width=10,relief="flat",bg=color_schema['input_bg_color'],font = ("Arial", 12),fg="#D6D6D6",borderwidth=1,highlightthickness=2, highlightbackground=color_schema['input_border_color'],highlightcolor=color_schema['input_border_color_active'])
+
+
+        input_lb.grid(row=0,column=0)
+        self.n_input.grid(row=0,column=1)
+        
+
+        display_btn=Button(input_frame,text="Afficher Graph",command=self.handle_btn_click,width=15)
+        display_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",borderwidth=0,font = ("Arial", 12))
+        # add_btn.pack(padx=20,pady=5)
+        display_btn.grid(row=0,column=2,padx=10,sticky=E)
+        
+
+        input_frame.pack()
+        input_frame.pack(padx=0,pady=1,anchor="w")
+        
+        self.validation_lb = Label(self.left_frame,bg=color_schema['window_bg'],height=0,text="",fg="#D6D6D6",font = ("Arial", 1))
+        self.validation_lb.pack( padx=0)
+        
+        
+        # self.progress_bar.start(10)7
+
+        s = ttk.Style()
+        # s.theme_use('clam')
+        s.configure("red.Horizontal.TProgressbar", foreground=color_schema["title_color"], background=color_schema["title_color"],troughcolor=color_schema["window_bg"])
+        self.progress_bar = ttk.Progressbar(self.left_frame,style="red.Horizontal.TProgressbar",orient=HORIZONTAL,length=300,mode='indeterminate')
+        self.progress_bar.pack(pady=5)
+
+
+        self.left_frame.pack(padx=10,pady=20,side=LEFT)        
+        #Side Right 
+        self.right_frame=Frame(self,bg=color_schema['window_bg'],height=0,width=0)
+        self.right_frame.pack(padx=0,pady=0,side=RIGHT)
+        # self.bind("<Return>",self.n_input.focus_force())
+        # self.bind("<Return>",self.some_action)
+        # self.bind("<MouseWheel>",self.stop_action)
+
+
+
+    def handle_btn_click(self):
+        try:
+            n = int(self.n_input.get())
+
+            self.validation_lb.config(text="",font = ("Arial",1),pady=0)
+            self.second_thread = threading.Thread(target=self.display_action)
+            self.second_thread.daemon = True
+            self.second_thread.start()
+
+
+            self.progress_bar.start()
+            self.after(20, self.stop_progress_bar)
+        except:
+            self.validation_lb.config(text="le nombre d'objets n doit être un entier!!",font = ("Arial", 10),pady=0)
+
+
+
+    def stop_progress_bar(self):
+        if self.second_thread.is_alive():
+            self.after(20, self.stop_progress_bar)
+        else:
+            self.progress_bar.stop() 
+
+    def display_action(self):
+        # progress_bar = ttk.Progressbar(self.left_frame,orient=HORIZONTAL,length=300,mode='indeterminate')
+        # progress_bar.pack(pady=5)
+        #self.progress_bar.start(5)
+        #input()
+        #Getting n
+        try:
+            n = int(self.n_input.get())
+ 
+
+            # progress_bar = ttk.Progressbar(self.left_frame,orient=HORIZONTAL,length=300,mode='indeterminate')
+            # progress_bar.pack(pady=5)
+            # progress_bar.start(5)
+            #Computing the data
+            Objects=alea_val(n,0,100,0,int(n/100))
+            step = max(1,int(n /100))
+            nb = 0
+            tab_n=[]
+            tab_cpt=[]
+            tmp = 0
+            nb = 0
+            while nb < n:
+                start = time.time()*1000
+                P(nb,nb,Objects)
+                end=time.time()*1000
+                tab_n.append(nb)
+                tab_cpt.append(end-start)
+                nb += step
+            # progress_bar.stop()
+            # progress_bar.destroy()
+
+            #Plotting
+            self.right_frame.destroy()
+            self.right_frame=Frame(self,bg=color_schema['window_bg'],height=0,width=0)
+            fig = Figure(figsize = (5, 5),dpi = 100)
+            plot1 = fig.add_subplot(111)
+            plot1.plot(tab_n,tab_cpt,linewidth=1)
+            plot1.set_xlabel('valeurs de n') 
+            plot1.set_ylabel('Temps execution (ms)')
+            plot1.set_title("Temps d'execution en fonction de n")          
+            canvas = FigureCanvasTkAgg(fig,master = self.right_frame)  
+            canvas.draw()
+            # placing the canvas on the Tkinter window
+            canvas.get_tk_widget().pack()
+            self.right_frame.pack(padx=40,pady=20,side=RIGHT)
+        except:
+            self.validation_lb.config(text="le nombre d'objets n doit être un entier!!",font = ("Arial", 10),pady=0)
+
+
+        
+
+
+        
+  
+        # list of squares
+        # y = [i**2 for i in range(101)]
+  
+        # # adding the subplot
+        # plot1 = fig.add_subplot(111)
+    
+        # plotting the graph
+        # plot1.plot(y)
+  
+        # creating the Tkinter canvas
+        # containing the Matplotlib figure
+        # canvas = FigureCanvasTkAgg(fig,
+        #                        master = self.right_frame)  
+        # canvas.draw()
+  
+        # # placing the canvas on the Tkinter window
+        # canvas.get_tk_widget().pack()
+  
+        # # creating the Matplotlib toolbar
+        # # toolbar = NavigationToolbar2Tk(canvas,self.right_frame)
+        # # toolbar.update()
+  
+        # # placing the toolbar on the Tkinter window
+        # canvas.get_tk_widget().pack()
+
+
+
+
+
+    
+    
+    def close_action(self):
+        #? Releasing the old window
+        self.grab_release()
+        self.destroy()
+
+
+    def test_fct_time(self,tab_w,sup_n,Objects):
+        step = int(sup_n /100)
+        nb=0
+        
+        nb = 0
+        tab_n=[]
+        tab_cpt=[]
+        tmp = 0
+        nb = 0
+        while nb < sup_n:
+            start = time.time()*1000
+            P(nb,nb,Objects)
+            end=time.time()*1000
+            tab_n.append(nb)
+            tab_cpt.append(end-start)
+            nb += step
+            #plt.figure(figsize=(5,3),dpi=100)
+        plt.plot(tab_n,tab_cpt,linewidth=1,label="w={}".format(step))
+        plt.xlabel('valeurs de n')
+        plt.ylabel('Temps execution (ms)')
+        plt.title("Evolution temps d'execution en fonction du nombre d'objets",fontdict={'fontname':'Comic Sans MS','fontsize':18})
+        plt.legend()
+        plt.show()
+        plt.savefig("PD_Rec_temps_exec.png")
 
 
 app = App()
