@@ -1,20 +1,22 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Oct 17 11:07:17 2022
+
+@author: Oussama Silem SIQ2
+"""
+
 # import code
 from tkinter import *
 from tkinter import ttk
-from turtle import left, right, title
 from TP_Sol import alea_val,P,P_objets
 import time
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
-
-import os
 import time
-from datetime import datetime
-import shutil
+# from datetime import datetime
 import threading
 
-#from tkinter.ttk import *
 
 
 class Custom_button(Button):
