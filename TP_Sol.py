@@ -224,6 +224,7 @@ def test_fct_time(sup_n,Objects):
 
 
 
-Objects = alea_val(10000,1,100,1,10)
-test_P_objects(20,100,Objects)
+# Objects = alea_val(10000,1,100,1,10)
+# test_P_objects(20,100,Objects)
 
+# test_fct_time(100,Objects)

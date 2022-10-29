@@ -14,7 +14,6 @@ import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 import time
-# from datetime import datetime
 import threading
 
 
@@ -38,29 +37,21 @@ color_schema = {
     'btn_relief' : 'raised',
     'btn_borderwidth':1,
 }
-# btn_color = "#3B52AD"   #ori : #788CDE
-# btn_color_active = "#5466AA"  #ori:#9BA8DB
+
 
 class App(Tk):
     
     def __init__(self):
         super().__init__()
         self.title('TPRO')
-        #self.geometry('520x180')
-        #styling
         self.configure(bg=color_schema['window_bg'])
         self.eval('tk::PlaceWindow . center')
-        #center(self)
         self.configure(padx=5,pady=10)
         self.resizable(False,False)
-        #Label
-        title= Label(self,text="Problème du sac à dos")
-        exp = Label(self,text="TPRO N°1 : Programmation dynamique")
-
-
-
         
-        #styling labels             #D6D6D6
+        #Labels
+        title= Label(self,text="Problème du sac à dos")
+        exp = Label(self,text="TPRO N°1 : Programmation dynamique")      
         title.configure( height=1,bg=color_schema['window_bg'],font = ("Arial", 16),fg=color_schema['font_color'],pady=6,padx=2)
         exp.configure(bg=color_schema['window_bg'],font = ("Arial", 12),fg=color_schema['font_color'],pady=5,padx=2)
         
@@ -68,19 +59,13 @@ class App(Tk):
         title.grid(row = 0,columnspan=4)
         exp.grid(row = 1,columnspan=4)
         
-        
         #Buttons
         btn_fr = Frame(self,bg=color_schema['window_bg'],height=15)
         btn_fr.grid(row = 2,columnspan=4)
-        #btn_fr.grid_propagate(False)
-        #Start button
         start_btn= Button(self,text="Démmarrer",command=self.start_action)
         quit_btn= Button(self,text="Quitter",command=self.quit_action)
-    
         start_btn.configure(relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,width=10,pady=3,padx=3,bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",font = ("Arial", 11))
         quit_btn.configure(relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,width=10,pady=3,padx=3,bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",font = ("Arial", 11))
-        
-        # button
         start_btn.grid(row = 3,columnspan=2,column=2,padx=2)   
         quit_btn.grid(row = 3,column=0,columnspan=2,padx=2)   
     
@@ -89,9 +74,7 @@ class App(Tk):
         
     def start_action(self):
         self.withdraw()
-        #show new window that if closed will unshow and show this window ()
         main = Main(self)
-        # self.eval(f'tk::PlaceWindow {str(main)} center')
 
         
 #gain,poids
@@ -197,6 +180,8 @@ class Main(Toplevel):  #The main windows
         style.map('Treeview.Heading',
             background=[('selected','#788CDE')]        )
         #Setting the table of the objects
+
+
         tree_scroll = Scrollbar(left_frame)
         tree_scroll.pack(side=RIGHT,fill=Y,pady=10)
         
@@ -1328,8 +1313,8 @@ de i entre 0 et n et affiche le graphe T_exec = f(n)
         text= Label(self.left_frame,text=
 """
 Les valeurs de n choisies ne doit pas être trop grande 
-(<2000).sinon le programme risque de prendre 
-beaucoup de temps pour afficher le graphe """)
+(<2000),sinon le programme risque de prendre trop
+de temps pour afficher le graphe """)
         text.configure(pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6")
         text.pack(padx=0,pady=1,anchor="w")
 
@@ -1347,11 +1332,11 @@ beaucoup de temps pour afficher le graphe """)
         self.n_input.grid(row=0,column=1)
         
 
-        display_btn=Button(input_frame,text="Afficher Graphe",command=self.handle_btn_click,width=15)
-        display_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
+        self.display_btn=Button(input_frame,text="Afficher Graphe",command=self.handle_btn_click,width=15)
+        self.display_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         # add_btn.pack(padx=20,pady=5)
-        display_btn.grid(row=0,column=2,padx=10,sticky=E)
-        
+        self.display_btn.grid(row=0,column=2,padx=10,sticky=E)
+        self.display_btn.configure(state=NORMAL)
 
         input_frame.pack()
         input_frame.pack(padx=0,pady=1,anchor="w")
@@ -1359,8 +1344,6 @@ beaucoup de temps pour afficher le graphe """)
         self.validation_lb = Label(self.left_frame,bg=color_schema['window_bg'],height=0,text="",fg="#D6D6D6",font = ("Arial", 1))
         self.validation_lb.pack( padx=0)
         
-        
-        # self.progress_bar.start(10)7
 
         s = ttk.Style()
         # s.theme_use('clam')
@@ -1373,20 +1356,21 @@ beaucoup de temps pour afficher le graphe """)
         #Side Right 
         self.right_frame=Frame(self,bg=color_schema['window_bg'],height=0,width=0)
         self.right_frame.pack(padx=0,pady=0,side=RIGHT)
-        # self.bind("<Return>",self.n_input.focus_force())
-        # self.bind("<Return>",self.some_action)
-        # self.bind("<MouseWheel>",self.stop_action)
 
 
 
-    def handle_btn_click(self):
+    def handle_btn_click(self,event=None):
         try:
             n = int(self.n_input.get())
-
             self.validation_lb.config(text="",font = ("Arial",1),pady=0)
+
+            #Creating a second thread for computing
             self.second_thread = threading.Thread(target=self.display_action)
             self.second_thread.daemon = True
             self.second_thread.start()
+            
+            #Disabling the button
+            self.display_btn.configure(state=DISABLED)
 
 
             self.progress_bar.start()
@@ -1401,21 +1385,13 @@ beaucoup de temps pour afficher le graphe """)
             self.after(20, self.stop_progress_bar)
         else:
             self.progress_bar.stop() 
+            self.display_btn.configure(state=NORMAL)
+
 
     def display_action(self):
-        # progress_bar = ttk.Progressbar(self.left_frame,orient=HORIZONTAL,length=300,mode='indeterminate')
-        # progress_bar.pack(pady=5)
-        #self.progress_bar.start(5)
-        #input()
-        #Getting n
+
         try:
             n = int(self.n_input.get())
- 
-
-            # progress_bar = ttk.Progressbar(self.left_frame,orient=HORIZONTAL,length=300,mode='indeterminate')
-            # progress_bar.pack(pady=5)
-            # progress_bar.start(5)
-            #Computing the data
             Objects=alea_val(n,0,100,0,int(n/100))
             step = max(1,int(n /100))
             nb = 0
@@ -1430,8 +1406,7 @@ beaucoup de temps pour afficher le graphe """)
                 tab_n.append(nb)
                 tab_cpt.append(end-start)
                 nb += step
-            # progress_bar.stop()
-            # progress_bar.destroy()
+
 
             #Plotting
             self.right_frame.destroy()
@@ -1449,43 +1424,6 @@ beaucoup de temps pour afficher le graphe """)
             self.right_frame.pack(padx=40,pady=20,side=RIGHT)
         except:
             self.validation_lb.config(text="le nombre d'objets n doit être un entier!!",font = ("Arial", 10),pady=0)
-
-
-        
-
-
-        
-  
-        # list of squares
-        # y = [i**2 for i in range(101)]
-  
-        # # adding the subplot
-        # plot1 = fig.add_subplot(111)
-    
-        # plotting the graph
-        # plot1.plot(y)
-  
-        # creating the Tkinter canvas
-        # containing the Matplotlib figure
-        # canvas = FigureCanvasTkAgg(fig,
-        #                        master = self.right_frame)  
-        # canvas.draw()
-  
-        # # placing the canvas on the Tkinter window
-        # canvas.get_tk_widget().pack()
-  
-        # # creating the Matplotlib toolbar
-        # # toolbar = NavigationToolbar2Tk(canvas,self.right_frame)
-        # # toolbar.update()
-  
-        # # placing the toolbar on the Tkinter window
-        # canvas.get_tk_widget().pack()
-
-
-
-
-
-    
     
     def close_action(self):
         #? Releasing the old window
@@ -1493,30 +1431,30 @@ beaucoup de temps pour afficher le graphe """)
         self.destroy()
 
 
-    def test_fct_time(self,tab_w,sup_n,Objects):
-        step = int(sup_n /100)
-        nb=0
+    # def test_fct_time(self,tab_w,sup_n,Objects):
+    #     step = int(sup_n /100)
+    #     nb=0
         
-        nb = 0
-        tab_n=[]
-        tab_cpt=[]
-        tmp = 0
-        nb = 0
-        while nb < sup_n:
-            start = time.time()*1000
-            P(nb,nb,Objects)
-            end=time.time()*1000
-            tab_n.append(nb)
-            tab_cpt.append(end-start)
-            nb += step
-            #plt.figure(figsize=(5,3),dpi=100)
-        plt.plot(tab_n,tab_cpt,linewidth=1,label="w={}".format(step))
-        plt.xlabel('valeurs de n')
-        plt.ylabel('Temps execution (ms)')
-        plt.title("Evolution temps d'execution en fonction du nombre d'objets",fontdict={'fontname':'Comic Sans MS','fontsize':18})
-        plt.legend()
-        plt.show()
-        plt.savefig("PD_Rec_temps_exec.png")
+    #     nb = 0
+    #     tab_n=[]
+    #     tab_cpt=[]
+    #     tmp = 0
+    #     nb = 0
+    #     while nb < sup_n:
+    #         start = time.time()*1000
+    #         P(nb,nb,Objects)
+    #         end=time.time()*1000
+    #         tab_n.append(nb)
+    #         tab_cpt.append(end-start)
+    #         nb += step
+    #         #plt.figure(figsize=(5,3),dpi=100)
+    #     plt.plot(tab_n,tab_cpt,linewidth=1,label="w={}".format(step))
+    #     plt.xlabel('valeurs de n')
+    #     plt.ylabel('Temps execution (ms)')
+    #     plt.title("Evolution temps d'execution en fonction du nombre d'objets",fontdict={'fontname':'Comic Sans MS','fontsize':18})
+    #     plt.legend()
+    #     plt.show()
+    #     plt.savefig("PD_Rec_temps_exec.png")
 
 
 app = App()
@@ -1528,19 +1466,19 @@ app.mainloop()
 
  
         
-def center(win):
-    """
-    centers a tkinter window
-    :param win: the main window or Toplevel window to center
-    """
-    win.update_idletasks()
-    width = win.winfo_width()
-    frm_width = win.winfo_rootx() - win.winfo_x()
-    win_width = width + 2 * frm_width
-    height = win.winfo_height()
-    titlebar_height = win.winfo_rooty() - win.winfo_y()
-    win_height = height + titlebar_height + frm_width
-    x = win.winfo_screenwidth() // 2 - win_width // 2
-    y = win.winfo_screenheight() // 2 - win_height // 2
-    win.geometry('{}x{}+{}+{}'.format(width, height, x, y))
-    win.deiconify()
+# def center(win):
+#     """
+#     centers a tkinter window
+#     :param win: the main window or Toplevel window to center
+#     """
+#     win.update_idletasks()
+#     width = win.winfo_width()
+#     frm_width = win.winfo_rootx() - win.winfo_x()
+#     win_width = width + 2 * frm_width
+#     height = win.winfo_height()
+#     titlebar_height = win.winfo_rooty() - win.winfo_y()
+#     win_height = height + titlebar_height + frm_width
+#     x = win.winfo_screenwidth() // 2 - win_width // 2
+#     y = win.winfo_screenheight() // 2 - win_height // 2
+#     win.geometry('{}x{}+{}+{}'.format(width, height, x, y))
+#     win.deiconify()
