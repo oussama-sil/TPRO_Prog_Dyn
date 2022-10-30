@@ -60,7 +60,6 @@ def P(n,w,Objects):
     P(n,w) : Gain maximale obtenu
 
     """
-    
     P_tab = np.full((n+1,w+1),0,dtype=int) #tab de P(i,j) déja calculé deja calculés, initialisé à 0
     # i=0 
     # j=0

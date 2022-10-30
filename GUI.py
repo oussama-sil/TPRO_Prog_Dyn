@@ -17,11 +17,7 @@ import time
 import threading
 
 
-
-class Custom_button(Button):
-    def __init__(self,txt,fct):
-        super().__init__(text=txt,command=fct)
-
+#Styling schema
 color_schema = {
     'window_bg' : '#1C1C1C',  #ori: #1C1C1C
     'font_color':'#D6D6D6', #ori #D6D6D6
@@ -38,9 +34,15 @@ color_schema = {
     'btn_borderwidth':1,
 }
 
+#Global Variables
+Objects =[[54,100],[557,487],[100,1000],[54,100],[557,487]]
+capacite_sac = 100
+gain_max = 0
+poids_max= 0
+
+
 
 class App(Tk):
-    
     def __init__(self):
         super().__init__()
         self.title('TPRO')
@@ -76,17 +78,6 @@ class App(Tk):
         self.withdraw()
         main = Main(self)
 
-        
-#gain,poids
-# Objects =[(54,100),(557,487),(100,1000),(54,100),(557,487),(100,1000),(54,100),(557,487),(100,1000),(54,100),(557,487),(100,1000),(54,100),(557,487),(100,1000),
-# (54,100),(557,487),(100,1000),(54,100),(557,487),(100,1000),(54,100),(557,487),(100,1000),(54,100),(557,487),(100,1000)]
-
-Objects =[[54,100],[557,487],[100,1000],[54,100],[557,487]]
-capacite_sac = 100
-gain_max = 0
-poids_max= 0
-
-
 class Main(Toplevel):  #The main windows 
     def __init__(self,App_window):
         super().__init__()
@@ -106,9 +97,6 @@ class Main(Toplevel):  #The main windows
         self.geometry("{}x{}".format(self.width,self.height))
         #styling
         self.configure(bg=color_schema['window_bg'])
-        #self.eval('tk::PlaceWindow . center')
-        #center(self)
-        #self.configure(padx=5,pady=10)
         self.resizable(False,False)
         self.protocol("WM_DELETE_WINDOW", self.close_action)
         
@@ -144,7 +132,7 @@ class Main(Toplevel):  #The main windows
         update_capacity_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 11))
         randomize_list_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 11))
 
-
+        #Adding the button to the window
         add_object_btn.grid(column=0,row=0,padx=3)
         edit_object_btn.grid(column=1,row=0,padx=3)
         delete_selection_btn.grid(column=2,row=0,padx=3)
@@ -153,7 +141,6 @@ class Main(Toplevel):  #The main windows
         randomize_list_btn.grid(column=5,row=0,padx=3)
 
         #? the left frame with list of objects
-        
         left_frame= Frame(self,width=0.5*self.width,height=300,bg=color_schema['window_bg'])
         left_frame.pack( side='left',padx=10,  pady=5)
         
@@ -179,9 +166,8 @@ class Main(Toplevel):  #The main windows
 
         style.map('Treeview.Heading',
             background=[('selected','#788CDE')]        )
-        #Setting the table of the objects
-
-
+        
+        #Table of objects
         tree_scroll = Scrollbar(left_frame)
         tree_scroll.pack(side=RIGHT,fill=Y,pady=10)
         
@@ -221,7 +207,6 @@ class Main(Toplevel):  #The main windows
         
         self.nb_objects_label2.configure(width=100,pady=5,bg=color_schema['window_bg'],font = ("Arial", 12,'bold'),fg=color_schema['title_color'],highlightthickness=1, highlightbackground="white")
 
-        # nb_objects_label1.configure(bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6",pady=5,padx=2)
         nb_objects_label1.pack(side='left',padx=10)
         self.nb_objects_label2.pack(side='right',padx=10)
         nb_object_frame.pack(pady=8,padx=10)
@@ -252,7 +237,6 @@ class Main(Toplevel):  #The main windows
         self.max_gain_label2.pack(side='right',padx=10)
         max_gain_frame.pack(pady=8,padx=10)
 
-
         #Capacity of the bag 
         capacity_frame=Frame(right_frame,width=400,bg=color_schema['window_bg'])
         capacity_label1 = Label(capacity_frame,text="Capacité du sac")
@@ -264,6 +248,7 @@ class Main(Toplevel):  #The main windows
         capacity_label1.pack(side='left',padx=10)
         self.capacity_label2.pack(side='right',padx=10)
         capacity_frame.pack(pady=8,padx=10)
+
         #Empty frame
         empty_frame2 = Frame(right_frame,width=400,bg=color_schema['window_bg'])
         empty_frame2.pack(pady=10)
@@ -286,12 +271,9 @@ class Main(Toplevel):  #The main windows
         print_algorithm_btn=Button(right_frame,text="Afficher l'algorithme",command=self.print_algorithm_action,width=100,height=2)
         print_algorithm_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
         print_algorithm_btn.pack(padx=20,pady=5)
-        
-        # print_table_P_btn=Button(right_frame,text="Afficher tables des P(i,j)",command=self.print_table_P_action,width=100,height=2)
-        # print_table_P_btn.configure(bg='#788CDE', fg='white',activebackground='#9BA8DB',activeforeground="white",borderwidth=0,font = ("Arial", 12))
-        # print_table_P_btn.pack(padx=20,pady=5)
+ 
 
-
+        #Putting the data on the window
         self.update_object_table()
 
     def update_object_table(self):
@@ -315,22 +297,12 @@ class Main(Toplevel):  #The main windows
         self.nb_objects_label2.config(text="{}".format(len(Objects)))
         self.max_weight_label2.config(text="{}".format(poids_max))
         self.capacity_label2.config(text="{}".format(capacite_sac))
-        
 
-    def set_max_weight(self):
-        pass
-
-    def set_max_gain(self):
-        pass
-
-
-    #Defining function for list of objects manipulation 
     def add_object_action(self):
         add_object_window = AddObjectWindow(self)
         self.App_window.eval(f'tk::PlaceWindow {str(add_object_window)} center')
 
     def edit_object_action(self):
-
         if(self.tree.focus() != ""):
             update_object_window = UpdateObjectWindow(self,int(self.tree.focus()))
             self.App_window.eval(f'tk::PlaceWindow {str(update_object_window)} center')
@@ -358,7 +330,6 @@ class Main(Toplevel):  #The main windows
         update_capacity_window = UpdateCapacityWindow(self)
         self.App_window.eval(f'tk::PlaceWindow {str(update_capacity_window)} center')
         
-
     def compute_P_action(self):
         compute_P_window = ComputePWindow(self)
         self.App_window.eval(f'tk::PlaceWindow {str(compute_P_window)} center')
@@ -376,14 +347,9 @@ class Main(Toplevel):  #The main windows
         self.App_window.eval(f'tk::PlaceWindow {str(print_algorithm_window)} center')
         pass
 
-    def print_table_P_action(self):
-        pass
-
-    #Closing action    
     def close_action(self):
         self.destroy()
         self.App_window.deiconify()
-
 
 class AddObjectWindow(Toplevel):
     def __init__(self,Main_window):
@@ -403,16 +369,12 @@ class AddObjectWindow(Toplevel):
         global capacite_sac
 
         self.title('Ajouter un nouveau objet')
-        # self.geometry("{}x{}".format(self.width,self.height))
-        #styling
         self.configure(bg=color_schema['window_bg'])
-        #self.eval('tk::PlaceWindow . center')
-        #center(self)
-        #self.configure(padx=5,pady=10)
         self.resizable(False,False)
         self.protocol("WM_DELETE_WINDOW", self.close_action)
 
         #? Adding the input fields
+        
         #Input for the weight
         weight_frame= Frame(self,width=400,bg=color_schema['window_bg']) ##1C1C1C
         weight_frame.pack( padx=10,  pady=15,fill='both')
@@ -448,21 +410,18 @@ class AddObjectWindow(Toplevel):
 
 
 
-        #adding the buttons
+        #Buttons
         btn_frame= Frame(self,width=400,bg=color_schema['window_bg'])
         btn_frame.pack( padx=15, pady=15,fill='both')
 
 
         cancel_btn=Button(btn_frame,text="Annuler",command=self.cancel_action,width=10)
         cancel_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
-        # add_btn.pack(padx=20,pady=5)
         cancel_btn.grid(row=0,column=0,padx=17,sticky=E)
 
         add_btn=Button(btn_frame,text="Ajouter",command=self.add_action,width=10)
         add_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
-        # add_btn.pack(padx=20,pady=5)
         add_btn.grid(row=0,column=1,padx=15,sticky=E)
-
 
     def cancel_action(self):
         #? Releasing the old window
@@ -495,7 +454,6 @@ class AddObjectWindow(Toplevel):
         self.grab_release()
         self.destroy()
 
-
 class UpdateObjectWindow(Toplevel):
     def __init__(self,Main_window,objct_indx):
         super().__init__(Main_window)
@@ -514,12 +472,7 @@ class UpdateObjectWindow(Toplevel):
         global capacite_sac
 
         self.title('Modifier objet')
-        # self.geometry("{}x{}".format(self.width,self.height))
-        #styling
         self.configure(bg=color_schema['window_bg'])
-        #self.eval('tk::PlaceWindow . center')
-        #center(self)
-        #self.configure(padx=5,pady=10)
         self.resizable(False,False)
         self.protocol("WM_DELETE_WINDOW", self.close_action)
 
@@ -568,12 +521,10 @@ class UpdateObjectWindow(Toplevel):
 
         cancel_btn=Button(btn_frame,text="Annuler",command=self.cancel_action,width=10)
         cancel_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
-        # add_btn.pack(padx=20,pady=5)
         cancel_btn.grid(row=0,column=0,padx=17,sticky=E)
 
         update_btn=Button(btn_frame,text="Modifier",command=self.update_action,width=10)
         update_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
-        # add_btn.pack(padx=20,pady=5)
         update_btn.grid(row=0,column=1,padx=15,sticky=E)
 
 
@@ -592,13 +543,8 @@ class UpdateObjectWindow(Toplevel):
             global gain_max
 
             if(weight >= 0 and gain >= 0):
-                # if(weight > poids_max):
-                #     poids_max = weight
-                # if(gain > gain_max):
-                #     gain_max = gain
                 Objects[self.object_indx][0]= gain
                 Objects[self.object_indx][1]= weight
-                # print(Objects)
                 self.App_window.update_object_table()
                 self.grab_release()
                 self.destroy()
@@ -613,7 +559,6 @@ class UpdateObjectWindow(Toplevel):
         self.grab_release()
         self.destroy()
 
-     
 class UpdateCapacityWindow(Toplevel):
     def __init__(self,Main_window):
         super().__init__(Main_window)
@@ -631,12 +576,7 @@ class UpdateCapacityWindow(Toplevel):
         global capacite_sac
 
         self.title('Modifier la capacité du sac')
-        # self.geometry("{}x{}".format(self.width,self.height))
-        #styling
         self.configure(bg=color_schema['window_bg'])
-        #self.eval('tk::PlaceWindow . center')
-        #center(self)
-        #self.configure(padx=5,pady=10)
         self.resizable(False,False)
         self.protocol("WM_DELETE_WINDOW", self.close_action)
 
@@ -672,12 +612,10 @@ class UpdateCapacityWindow(Toplevel):
 
         cancel_btn=Button(btn_frame,text="Annuler",command=self.cancel_action,width=10)
         cancel_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
-        # add_btn.pack(padx=20,pady=5)
         cancel_btn.grid(row=0,column=0,padx=17,sticky=E)
 
         update_btn=Button(btn_frame,text="Modifier",command=self.update_action,width=10)
         update_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
-        # add_btn.pack(padx=20,pady=5)
         update_btn.grid(row=0,column=1,padx=17,sticky=E)
 
 
@@ -702,7 +640,6 @@ class UpdateCapacityWindow(Toplevel):
         #? Releasing the old window
         self.grab_release()
         self.destroy()
-
 
 class RandomizeObjectsWindow(Toplevel):
     def __init__(self,Main_window):
@@ -842,7 +779,6 @@ class RandomizeObjectsWindow(Toplevel):
             max_gain = int(self.max_gain_input.get())
             nb_objects = int(self.nb_objects_input.get())
             Objects = alea_val(nb_objects,min_gain,max_gain,min_weight,max_weight)
-            # print(Objects)
             self.App_window.update_object_table()
             self.grab_release()
             self.destroy()
@@ -853,7 +789,6 @@ class RandomizeObjectsWindow(Toplevel):
         #? Releasing the old window
         self.grab_release()
         self.destroy()
-
 
 class ComputePWindow(Toplevel):
     def __init__(self,Main_window):
@@ -873,12 +808,7 @@ class ComputePWindow(Toplevel):
         global capacite_sac
 
         self.title('Calcul de P(i,j)')
-        # self.geometry("{}x{}".format(self.width,self.height))
-        #styling
         self.configure(bg=color_schema['window_bg'])
-        #self.eval('tk::PlaceWindow . center')
-        #center(self)
-        #self.configure(padx=5,pady=10)
         self.resizable(False,False)
         self.protocol("WM_DELETE_WINDOW", self.close_action)
 
@@ -935,12 +865,10 @@ class ComputePWindow(Toplevel):
 
         quit_btn=Button(btn_frame,text="Quitter",command=self.quit_action,width=10)
         quit_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
-        # add_btn.pack(padx=20,pady=5)
         quit_btn.grid(row=0,column=0,padx=25,sticky=E)
 
         compute_btn=Button(btn_frame,text="Calculer P(i,j)",command=self.compute_action,width=12)
         compute_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
-        # add_btn.pack(padx=20,pady=5)
         compute_btn.grid(row=0,column=1,padx=25,sticky=E)
 
 
@@ -967,14 +895,12 @@ class ComputePWindow(Toplevel):
                 self.P_lb.config(text='P({},{}) = {}'.format(i,j,P_i_j),height=1,font = ("Arial", 12,'bold'))
                 self.T_lb.config(text='Temps de calcul de P({},{}) = {:.2f}ms'.format(i,j,end-start),height=1,font = ("Arial", 12,'bold'))
         except Exception as e:
-            # print(e)
             self.validation_lb.config(text='i et j doivent être des entiers',height=2,font = ("Arial", 9))
 
     def close_action(self):
         #? Releasing the old window
         self.grab_release()
         self.destroy()
-
 
 class ResolveProblemWindow(Toplevel):
     def __init__(self,Main_window):
@@ -994,12 +920,7 @@ class ResolveProblemWindow(Toplevel):
         global capacite_sac
 
         self.title('Résolution du problème')
-        # self.geometry("{}x{}".format(self.width,self.height))
-        #styling
         self.configure(bg=color_schema['window_bg'])
-        #self.eval('tk::PlaceWindow . center')
-        #center(self)
-        #self.configure(padx=5,pady=10)
         self.resizable(False,False)
         self.protocol("WM_DELETE_WINDOW", self.close_action)
 
@@ -1090,7 +1011,7 @@ class ResolveProblemWindow(Toplevel):
 
         style.map('Treeview.Heading',
             background=[('selected','#788CDE')]        )
-        #Setting the table of the objects
+        #Table of selected objects
         tree_scroll = Scrollbar(list_selected_objects_frame)
         tree_scroll.pack(side=RIGHT,fill=Y,pady=10)
         
@@ -1118,7 +1039,6 @@ class ResolveProblemWindow(Toplevel):
 
         self.update_fields()
 
-
     def update_fields(self):
         global Objects
         global capacite_sac
@@ -1133,12 +1053,11 @@ class ResolveProblemWindow(Toplevel):
             tmp_weight += Objects[indx][1]
             self.tree.insert(parent='',index='end',iid=indx,text=indx,values=(Objects[indx][0],Objects[indx][1]))
         self.cum_weight_label2.config(text="{}".format(tmp_weight)) #TODO
+    
     def close_action(self):
         #? Releasing the old window
         self.grab_release()
         self.destroy()
-
-
 
 class DisplayAlgorithmWindow(Toplevel):
     def __init__(self,Main_window):
@@ -1158,26 +1077,10 @@ class DisplayAlgorithmWindow(Toplevel):
         global capacite_sac
 
         self.title("Affichage de l'algorithme")
-        # self.geometry("{}x{}".format(self.width,self.height))
-        #styling
         self.configure(bg=color_schema['window_bg'])
-        #self.eval('tk::PlaceWindow . center')
-        #center(self)
-        #self.configure(padx=5,pady=10)
         self.resizable(False,False)
         self.protocol("WM_DELETE_WINDOW", self.close_action)
 
-
-        #Title
-        # title_frame=Frame(self,width=400,bg=color_schema['window_bg'])
-        # title= Label(title_frame,text="VAR : ")
-        # title.configure(pady=10,bg=color_schema['window_bg'],font = ("Arial", 15,'bold'),fg=color_schema['title_color'])
-        # title.pack(padx=0,pady=0,anchor="w")
-        # # title.grid(row=0,col=0)
-        # title_frame.pack(pady=2,padx=15,fill=X)
-
-        # Code
-        # var_frame=Frame(self,width=400,bg=color_schema['window_bg'])
         
 
         var_frame=Frame(self,bg=color_schema['window_bg'])
@@ -1212,8 +1115,6 @@ class DisplayAlgorithmWindow(Toplevel):
         var.configure(pady=0,bg=color_schema['window_bg'],font = ("Arial", 12,"bold"),fg=color_schema['title_color'])
         var.pack(padx=0,pady=2,anchor="w")
         
-        # var= Label(var_frame,text="  i := 0",pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6").pack(padx=0,pady=0,anchor="w")
-        # var= Label(var_frame,text="  j := 0",pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6").pack(padx=0,pady=0,anchor="w")
         var= Label(var_frame,text="  Pour i = 0, n",pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6").pack(padx=0,pady=0,anchor="w")
         var= Label(var_frame,text="      Pour j = 0, w",pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6").pack(padx=0,pady=0,anchor="w")
         var= Label(var_frame,text="      \tSi (i=0 ou j=0)",pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6").pack(padx=0,pady=0,anchor="w")
@@ -1226,7 +1127,7 @@ class DisplayAlgorithmWindow(Toplevel):
         var= Label(var_frame,text="      \t\tFSI ",pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6").pack(padx=0,pady=0,anchor="w")
         var= Label(var_frame,text="     \tFSI",pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6").pack(padx=0,pady=0,anchor="w")
         var= Label(var_frame,text="    FPour",pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6").pack(padx=0,pady=0,anchor="w")
-        var= Label(var_frame,text="  FPOUR",pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6").pack(padx=0,pady=0,anchor="w")
+        var= Label(var_frame,text="  FPour",pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6").pack(padx=0,pady=0,anchor="w")
         var= Label(var_frame,text="  P = P_Val[n,w]",pady=0,bg=color_schema['window_bg'],font = ("Arial", 12),fg="#D6D6D6").pack(padx=0,pady=0,anchor="w")
 
 
@@ -1236,17 +1137,10 @@ class DisplayAlgorithmWindow(Toplevel):
 
         var_frame.pack(pady=5,padx=20)
 
-
-
-
-
-
     def close_action(self):
         #? Releasing the old window
         self.grab_release()
         self.destroy()
-
-
 
 class TestAlgorithmWindow(Toplevel):
     def __init__(self,Main_window):
@@ -1266,12 +1160,7 @@ class TestAlgorithmWindow(Toplevel):
         global capacite_sac
 
         self.title("Test de l'algorithme")
-        # self.geometry("{}x{}".format(self.width,self.height))
-        #styling
         self.configure(bg=color_schema['window_bg'])
-        #self.eval('tk::PlaceWindow . center')
-        #center(self)
-        #self.configure(padx=5,pady=10)
         self.resizable(False,False)
         self.protocol("WM_DELETE_WINDOW", self.close_action)
 
@@ -1334,7 +1223,6 @@ de temps pour afficher le graphe """)
 
         self.display_btn=Button(input_frame,text="Afficher Graphe",command=self.handle_btn_click,width=15)
         self.display_btn.configure(bg=color_schema['btn_color'], fg='white',activebackground=color_schema['btn_color_active'],activeforeground="white",relief=color_schema["btn_relief"],borderwidth=color_schema["btn_borderwidth"]  ,font = ("Arial", 12))
-        # add_btn.pack(padx=20,pady=5)
         self.display_btn.grid(row=0,column=2,padx=10,sticky=E)
         self.display_btn.configure(state=NORMAL)
 
@@ -1346,7 +1234,6 @@ de temps pour afficher le graphe """)
         
 
         s = ttk.Style()
-        # s.theme_use('clam')
         s.configure("red.Horizontal.TProgressbar", foreground=color_schema["btn_color"], background=color_schema["btn_color"],troughcolor=color_schema["window_bg"])
         self.progress_bar = ttk.Progressbar(self.left_frame,style="red.Horizontal.TProgressbar",orient=HORIZONTAL,length=300,mode='indeterminate')
         self.progress_bar.pack(pady=5)
@@ -1356,8 +1243,6 @@ de temps pour afficher le graphe """)
         #Side Right 
         self.right_frame=Frame(self,bg=color_schema['window_bg'],height=0,width=0)
         self.right_frame.pack(padx=0,pady=0,side=RIGHT)
-
-
 
     def handle_btn_click(self,event=None):
         try:
@@ -1378,8 +1263,6 @@ de temps pour afficher le graphe """)
         except:
             self.validation_lb.config(text="le nombre d'objets n doit être un entier!!",font = ("Arial", 10),pady=0)
 
-
-
     def stop_progress_bar(self):
         if self.second_thread.is_alive():
             self.after(20, self.stop_progress_bar)
@@ -1387,13 +1270,18 @@ de temps pour afficher le graphe """)
             self.progress_bar.stop() 
             self.display_btn.configure(state=NORMAL)
 
-
     def display_action(self):
 
         try:
             n = int(self.n_input.get())
             Objects=alea_val(n,0,100,0,int(n/100))
-            step = max(1,int(n /100))
+
+            if n>=4000:
+                step = max(1,int(n /10))
+            elif n>=1000 and n<4000:
+                step = max(1,int(n /25))
+            else:
+                step = max(1,int(n /50))
             nb = 0
             tab_n=[]
             tab_cpt=[]
@@ -1431,32 +1319,9 @@ de temps pour afficher le graphe """)
         self.destroy()
 
 
-    # def test_fct_time(self,tab_w,sup_n,Objects):
-    #     step = int(sup_n /100)
-    #     nb=0
-        
-    #     nb = 0
-    #     tab_n=[]
-    #     tab_cpt=[]
-    #     tmp = 0
-    #     nb = 0
-    #     while nb < sup_n:
-    #         start = time.time()*1000
-    #         P(nb,nb,Objects)
-    #         end=time.time()*1000
-    #         tab_n.append(nb)
-    #         tab_cpt.append(end-start)
-    #         nb += step
-    #         #plt.figure(figsize=(5,3),dpi=100)
-    #     plt.plot(tab_n,tab_cpt,linewidth=1,label="w={}".format(step))
-    #     plt.xlabel('valeurs de n')
-    #     plt.ylabel('Temps execution (ms)')
-    #     plt.title("Evolution temps d'execution en fonction du nombre d'objets",fontdict={'fontname':'Comic Sans MS','fontsize':18})
-    #     plt.legend()
-    #     plt.show()
-    #     plt.savefig("PD_Rec_temps_exec.png")
 
 
+#Starting the app
 app = App()
 app.mainloop()
 
@@ -1465,20 +1330,3 @@ app.mainloop()
 
 
  
-        
-# def center(win):
-#     """
-#     centers a tkinter window
-#     :param win: the main window or Toplevel window to center
-#     """
-#     win.update_idletasks()
-#     width = win.winfo_width()
-#     frm_width = win.winfo_rootx() - win.winfo_x()
-#     win_width = width + 2 * frm_width
-#     height = win.winfo_height()
-#     titlebar_height = win.winfo_rooty() - win.winfo_y()
-#     win_height = height + titlebar_height + frm_width
-#     x = win.winfo_screenwidth() // 2 - win_width // 2
-#     y = win.winfo_screenheight() // 2 - win_height // 2
-#     win.geometry('{}x{}+{}+{}'.format(width, height, x, y))
-#     win.deiconify()
